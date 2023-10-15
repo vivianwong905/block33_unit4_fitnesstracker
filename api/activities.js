@@ -29,7 +29,18 @@ router.get('/', async (req, res, next) => {
     next(error)
   }
 })
+//HOMEWORK get one activities
+router.get('/:activityId', async (req, res, next) => {
+  try {
+    const {activityId} = req.params;
+    const activities = await getActivityById(activityId);
+    res.send(activities);
+  } catch (error) {
+    next(error)
+  }
+})
 
+//HOMEWORK - checked in postman and it worked with adding an auth token
 // POST /api/activities
 router.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description']}), async (req, res, next) => {
   try {

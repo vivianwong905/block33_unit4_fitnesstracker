@@ -16,11 +16,24 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+
+// HOMEWORK: fix GET a single routine by ID: GET one routines by ID:
+router.get('/:id', async (req, res, next) => {
+  try {
+    // TODO - send back all data, including private, if token present. This would mean adding only the data for the user that matches the request
+    const singleRoutines = await getRoutineById(req.params.id);
+    res.send(singleRoutines);
+  } catch (error) {
+    next(error)
+  }
+})
+
+//HOMEWORK - checked in postman and it worked with adding an auth token
 // POST /api/routines
 router.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'goal']}), async (req, res, next) => {
   try {
     const {name, goal} = req.body;
-    const createdRoutine = await createRoutine({creatorId: req.user.id, name, goal, isPublic: req.body.isPublic});
+    const createdRoutine = await createRoutine({creatorId: req.user.id, isPublic: req.body.isPublic, name, goal, });
     if(createdRoutine) {
       res.send(createdRoutine);
     } else {
